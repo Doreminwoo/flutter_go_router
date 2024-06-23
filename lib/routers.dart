@@ -83,6 +83,7 @@ final GoRouter routers = GoRouter(
     ),
   ],
   redirect: (context, state) {
+    // 현재 로그인 화면인지 확인하는 변수
     final bool authIn = state.matchedLocation == '/auth';
     if (!isLoggedIn && !authIn) return '/auth';
 
@@ -92,4 +93,5 @@ final GoRouter routers = GoRouter(
   },
 );
 
+// 자동로그인 변수
 bool isLoggedIn = true;
