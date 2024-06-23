@@ -7,7 +7,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 1), () {
-      context.go('/a'); // 초기 경로로 전환
+      context.replaceNamed('a');
     });
 
     return const Scaffold(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_go_router/main_srceen.dart';
+import 'package:flutter_go_router/aa_screen.dart';
+import 'package:flutter_go_router/auth_screen.dart';
+import 'package:flutter_go_router/main_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import 'a_screen.dart';
@@ -21,6 +23,12 @@ final GoRouter routers = GoRouter(
         return const SplashScreen();
       },
       routes: <RouteBase>[
+        GoRoute(
+          path: 'auth',
+          builder: (context, state) {
+            return const AuthScreen();
+          },
+        ),
         StatefulShellRoute.indexedStack(
           builder: (BuildContext context, GoRouterState state,
               StatefulNavigationShell navigationShell) {
@@ -29,10 +37,17 @@ final GoRouter routers = GoRouter(
           branches: [
             StatefulShellBranch(routes: [
               GoRoute(
-                path: 'a',
-                builder: (BuildContext context, GoRouterState state) =>
-                    const AScreen(),
-              ),
+                  path: 'a',
+                  name: 'a',
+                  builder: (BuildContext context, GoRouterState state) =>
+                      const AScreen(),
+                  routes: [
+                    GoRoute(
+                      path: 'aa',
+                      name: 'aa',
+                      builder: (context, state) => const AaScreen(),
+                    )
+                  ]),
             ]),
             StatefulShellBranch(routes: [
               GoRoute(
@@ -67,4 +82,14 @@ final GoRouter routers = GoRouter(
       ],
     ),
   ],
+  redirect: (context, state) {
+    final bool authIn = state.matchedLocation == '/auth';
+    if (!isLoggedIn && !authIn) return '/auth';
+
+    if (isLoggedIn && authIn) return '/a';
+
+    return null;
+  },
 );
+
+bool isLoggedIn = true;
